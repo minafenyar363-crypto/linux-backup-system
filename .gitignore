@@ -1,0 +1,5 @@
+backups/
+logs/
+restore-test/
+backup.sh.save
+trap-test.sh
