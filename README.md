@@ -53,7 +53,7 @@ This creates a snapshot-style backup where unchanged files can share the same in
 Each backup can still be accessed as a complete snapshot.
 
 ```
-##Daily Retention
+## Daily Retention
 
 The system keeps the configured number of daily backups.
 
@@ -63,7 +63,7 @@ Retention = 7
 
 If 8 daily backups exist, the oldest backup is removed.
 
-##Weekly Rotation
+## Weekly Rotation
 
 Every Sunday, the system creates a weekly backup from the latest daily backup.
 
@@ -79,7 +79,7 @@ The weekly backup is stored as an independent copy and does not use --link-dest.
 
 The script also prevents creating multiple weekly backups for the same day.
 
-##Weekly Retention
+## Weekly Retention
 
 The system keeps the configured number of weekly backups.
 
@@ -89,7 +89,7 @@ Weekly Retention = 4
 
 If more than four weekly backups exist, the oldest weekly backups are removed.
 
-##Restore
+## Restore
 
 A specific backup can be restored using:
 
@@ -112,7 +112,7 @@ rsync -a
 
 to copy the backup contents back to the configured source directory.
 
-##Configuration
+## Configuration
 
 Backup settings are stored in:
 
@@ -128,7 +128,7 @@ WEEKLY_RETENTION_COUNT=4
 
 The configuration file allows backup settings to be changed without modifying the main backup logic.
 
-##Logging
+## Logging
 
 Backup operations are logged to:
 
@@ -169,7 +169,7 @@ Disk Space Check
 
 Before starting a backup, the system compares:
 
-##Source data size
+## Source data size
 Available filesystem space
 
 If available space is insufficient, the backup stops before starting the backup operation.
@@ -186,7 +186,7 @@ This runs the backup every day at 2:00 AM.
 
 On Sunday, the backup script also performs the weekly rotation.
 
-##Backup Flow
+## Backup Flow
 Cron
   │
   ▼
@@ -207,7 +207,7 @@ backup.sh
   ├── Apply Weekly Retention
   │
   └── Log result
-##Testing
+## Testing
 
 The project was tested using a Linux virtual machine.
 
@@ -232,7 +232,7 @@ GNU/Linux utilities
 Git / GitHub
 Future Improvements
 
-##Possible future enhancements:
+## Possible future enhancements:
 
 Remote backup using SSH and rsync
 Backup integrity verification
@@ -240,7 +240,7 @@ Locking to prevent overlapping backup jobs
 Notifications on backup failure
 Monthly backup rotation
 Systemd timer support
-##Author
+## Author
 
 Mina Fenyar
 
