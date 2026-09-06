@@ -28,6 +28,7 @@ linux-backup-system/
 ├── logs/
 ├── restore-test/
 └── .gitignore
+
 ##  Daily Backup
 
 The system creates a new backup directory using a timestamp:
@@ -37,6 +38,7 @@ YYYY-MM-DD_HH-MM-SS
 Example:
 
 backups/daily/2026-09-06_12-40-11
+
 ## Daily Retention
 
 The system keeps the configured number of daily backups.
@@ -46,7 +48,9 @@ Example:
 Retention = 7
 
 If 8 daily backups exist, the oldest backup is removed.
+
 ## Weekly Rotation
+
 
 Every Sunday, the system creates a weekly backup from the latest daily backup.
 
@@ -62,6 +66,7 @@ The weekly backup is stored as an independent copy and does not use --link-dest.
 
 The script also prevents creating multiple weekly backups for the same day.
 
+
 ## Weekly Retention
 
 The system keeps the configured number of weekly backups.
@@ -71,6 +76,7 @@ Example:
 Weekly Retention = 4
 
 If more than four weekly backups exist, the oldest ones are removed.
+
 
 ## Restore
 
@@ -90,6 +96,7 @@ rsync -a
 
 to copy the backup contents back to the configured source directory.
 
+
 ## Configuration
 
 Backup settings are stored in:
@@ -105,6 +112,7 @@ WEEKLY_ROOT="$HOME/backup-project/backups/weekly"
 WEEKLY_RETENTION_COUNT=4
 
 This makes the system configurable without modifying the main backup logic.
+
 
 ## Logging
 
@@ -126,6 +134,8 @@ Retention actions
 Weekly rotation
 Errors
 Successful completion
+
+
 ## Error Handling
 
 The scripts use:
@@ -143,6 +153,8 @@ Failed command
 Example:
 
 [ERROR] Line: 25 | Command: ...
+
+
 ## Disk Space Check
 
 Before starting a backup, the system compares:
@@ -163,6 +175,7 @@ Example Cron job:
 This runs the backup every day at 2:00 AM.
 
 On Sunday, the backup script also performs the weekly rotation.
+
 
 ## Testing
 
@@ -201,13 +214,18 @@ backup.sh
   ├── Apply Weekly Retention
   │
   └── Log result
+
+
 ## Technologies
+
 Linux
 Bash
 rsync
 Cron
 GNU/Linux utilities
 Git / GitHub
+
+
 ## Future Improvements
 
 Possible future enhancements:
@@ -218,6 +236,8 @@ Locking to prevent overlapping backup jobs
 Notifications on backup failure
 Monthly backup rotation
 Systemd timer support
+
+
 ## Author
 
 Mina Fenyar
