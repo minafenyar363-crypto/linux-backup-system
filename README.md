@@ -29,7 +29,10 @@ linux-backup-system/
 ├── restore-test/
 └── .gitignore
 
-##  Daily Backup
+backups/, logs/, and restore-test/ are excluded from Git using .gitignore.
+
+How It Works
+Daily Backup
 
 The system creates a new backup directory using a timestamp:
 
@@ -39,7 +42,17 @@ Example:
 
 backups/daily/2026-09-06_12-40-11
 
-## Daily Retention
+If no previous backup exists, the system performs a full backup.
+
+If a previous backup exists, the system uses rsync with:
+
+--link-dest
+
+This creates a snapshot-style backup where unchanged files can share the same inode through hard links, reducing unnecessary disk usage.
+
+Each backup can still be accessed as a complete snapshot.
+
+Daily Retention
 
 The system keeps the configured number of daily backups.
 
@@ -49,8 +62,7 @@ Retention = 7
 
 If 8 daily backups exist, the oldest backup is removed.
 
-## Weekly Rotation
-
+Weekly Rotation
 
 Every Sunday, the system creates a weekly backup from the latest daily backup.
 
@@ -66,8 +78,7 @@ The weekly backup is stored as an independent copy and does not use --link-dest.
 
 The script also prevents creating multiple weekly backups for the same day.
 
-
-## Weekly Retention
+Weekly Retention
 
 The system keeps the configured number of weekly backups.
 
@@ -75,10 +86,9 @@ Example:
 
 Weekly Retention = 4
 
-If more than four weekly backups exist, the oldest ones are removed.
+If more than four weekly backups exist, the oldest weekly backups are removed.
 
-
-## Restore
+Restore
 
 A specific backup can be restored using:
 
@@ -88,7 +98,12 @@ Example:
 
 ./restore.sh 2026-09-06_12-40-11
 
-The script validates that the requested backup exists and asks for confirmation before restoring.
+The restore script:
+
+Validates that the requested backup exists
+Displays the source and target
+Requests confirmation before restoring
+Restores the backup using rsync
 
 The restore operation uses:
 
@@ -96,8 +111,7 @@ rsync -a
 
 to copy the backup contents back to the configured source directory.
 
-
-## Configuration
+Configuration
 
 Backup settings are stored in:
 
@@ -111,10 +125,9 @@ RETENTION_COUNT=7
 WEEKLY_ROOT="$HOME/backup-project/backups/weekly"
 WEEKLY_RETENTION_COUNT=4
 
-This makes the system configurable without modifying the main backup logic.
+The configuration file allows backup settings to be changed without modifying the main backup logic.
 
-
-## Logging
+Logging
 
 Backup operations are logged to:
 
@@ -134,9 +147,7 @@ Retention actions
 Weekly rotation
 Errors
 Successful completion
-
-
-## Error Handling
+Error Handling
 
 The scripts use:
 
@@ -153,20 +164,18 @@ Failed command
 Example:
 
 [ERROR] Line: 25 | Command: ...
-
-
-## Disk Space Check
+Disk Space Check
 
 Before starting a backup, the system compares:
 
 Source data size
 Available filesystem space
 
-If available space is insufficient, the backup stops.
+If available space is insufficient, the backup stops before starting the backup operation.
 
 Automation
 
-The backup is scheduled using Cron.
+The backup system is automated using Cron.
 
 Example Cron job:
 
@@ -176,24 +185,7 @@ This runs the backup every day at 2:00 AM.
 
 On Sunday, the backup script also performs the weekly rotation.
 
-
-## Testing
-
-The project was tested using a Linux virtual machine.
-
-Tests included:
-
-Full backup
-Snapshot backup
-Hard-link verification
-Retention policy
-Weekly rotation
-Weekly retention
-Restore of deleted files
-Disk space validation
-Error handling
-Cron automation
-Example Backup Flow
+Backup Flow
 Cron
   │
   ▼
@@ -214,19 +206,30 @@ backup.sh
   ├── Apply Weekly Retention
   │
   └── Log result
+Testing
 
+The project was tested using a Linux virtual machine.
 
-## Technologies
+Tests included:
 
+Full backup
+Snapshot backup
+Hard-link verification
+Daily retention policy
+Weekly rotation
+Weekly retention
+Restore of deleted files
+Disk space validation
+Error handling
+Cron automation
+Technologies
 Linux
 Bash
 rsync
 Cron
 GNU/Linux utilities
 Git / GitHub
-
-
-## Future Improvements
+Future Improvements
 
 Possible future enhancements:
 
@@ -236,9 +239,7 @@ Locking to prevent overlapping backup jobs
 Notifications on backup failure
 Monthly backup rotation
 Systemd timer support
-
-
-## Author
+Author
 
 Mina Fenyar
 
