@@ -52,6 +52,7 @@ This creates a snapshot-style backup where unchanged files can share the same in
 
 Each backup can still be accessed as a complete snapshot.
 
+```
 ##Daily Retention
 
 The system keeps the configured number of daily backups.
